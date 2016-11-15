@@ -2,5 +2,4 @@
         name = Marc Butler
 
 [alias]
-        s = status
-        
+        st = status
