@@ -1,18 +1,7 @@
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-  (package-initialize))
-
-(add-to-list 'load-path "~/.dotfiles/site-lisp")
-
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
-
-(require 'windmove)
-(windmove-default-keybindings)
-(setq windmove-wrap-around t)
 
 (require 'server)
 (unless (server-running-p)
@@ -56,38 +45,49 @@
   (setq ispell-program-name "aspell")
   (setq ispell-extra-args '("--sug-mode=ultra" "--lang=enUS"))))
 
-;; Emacs managed packages.
-(require 'mmm-mode)
-(setq mmm-global-mode 'maybe)
-(mmm-add-mode-ext-class 'c-mode nil 'ragel)
-
-;; Requires mmm-mode.
-(load-file "~/.dotfiles/site-lisp/ragel.el")
-
 (add-to-list 'auto-mode-alist '("\\.gdb\\'" . gdb-script-mode))
 
-;; Use helm instead of ido.
-;; http://tuhdo.github.io/helm-intro.html
-(require 'helm)
-(require 'helm-config)
-(when (executable-find "curl")
-  (setq helm-google-suggest-use-curl-p t))
-(setq helm-split-window-in-side-p t
-      helm-move-to-line-cycle-in-source t
-      helm-ff-search-library-in-sexp t
-      helm-scroll-amount 8
-      helm-ff-file-name-history-use-recentf t
-      helm-buffers-fuzzy-matching t
-      helm-recentf-fuzzy-match t)
-(add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
-(helm-autoresize-mode t)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-(helm-mode 1)
-;; Insinuate helm.
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(defun marc/this-word-occur ()
+  "Run occur using the current word under the point."
+  (interactive)
+  (save-excursion
+    (progn
+      (backward-word)
+      (setq beg (point))
+      (forward-word)
+      (setq end (point))
+      (setq word (buffer-substring-no-properties beg end))
+      (occur word))))
+(global-set-key (kbd "M-s t") 'mockb-occurances-of-this-word)
 
+(defun marc/copy-file-location ()
+  "Copy file name and line position in the format file:line
+suitable for tools like gdb to kill ring."
+  (interactive)
+  (save-excursion
+    (let ((ln (line-number-at-pos))
+          (fn (file-name-nondirectory buffer-file-truename)))
+      (kill-new (format "%s:%d" fn ln)))))
 
-(require 'mockb)
+;; http://stackoverflow.com/questions/3669511/the-function-to-show-current-files-full-path-in-mini-buffer
+(defun marc/copy-full-path-to-kill-ring ()
+  "Copy the canonical path of the current buffer to the kill ring."
+  (interactive)
+  (when buffer-file-name
+    (kill-new (file-truename buffer-file-name))))
+
+;; https://rejeep.github.io/emacs/elisp/2010/11/16/delete-file-and-buffer-in-emacs.html
+(defun marc/delete-this-buffer-and-file ()
+  "Kill current buffer and corresponding file."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (when (yes-or-no-p "Really delete the backing file? ")
+        (delete-file filename)
+        (kill-buffer buffer)
+        (message "File '%s' successfully deleted." filename)))))
+
 (provide 'myconfig)
