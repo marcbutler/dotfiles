@@ -90,4 +90,65 @@ suitable for tools like gdb to kill ring."
         (kill-buffer buffer)
         (message "File '%s' successfully deleted." filename)))))
 
+(defun marc/text-of-thing-at-point ()
+  (cond
+   ((thing-at-point 'symbol) (kill-new (thing-at-point 'symbol t)))
+   ((thing-at-point 'word) (kill-new (thing-at-point 'word t)))
+   (t nil)))
+
+(defun marc/copy-thing-at-point ()
+  (interactive)
+  (let ((txt (marc/text-of-thing-at-point)))
+    (if txt
+        (kill-new txt)
+      (message "No word/symbol at point to copy."))))
+(global-set-key (kbd "C-c s") 'marc/copy-thing-at-point)
+
+(defun marc/where-does-this-occur ()
+  (interactive)
+  (if (use-region-p)
+      (occur (buffer-substring-no-properties (region-beginning) (region-end)))
+    (let ((txt (marc/text-thing-at-point)))
+      (if txt
+          (occur (concat "\\b" txt "\\b"))
+        (message "No region/symbol/word for occur.")))))
+
+(defun marc/tidy-function ()
+  "Reindent and cleanup whitespace in the current function."
+  (interactive)
+  (save-excursion
+    (c-mark-function)
+    (let ((rbeg (region-beginning))
+          (rend (region-end)))
+      (indent-region rbeg rend)
+      (whitespace-cleanup-region rbeg rend))))
+
+(defun marc/extract-from-quoted (txt)
+  (let* ((joined (replace-regexp-in-string "\n$" "" txt))
+         (exploded (split-string joined))
+         (noquotes (delete ">" exploded)))
+    (mapconcat 'identity noquotes " ")))
+
+(defun marc/remove-header-guard ()
+  (save-excursion
+    (goto-char (point-min))
+    (delete-region (point) (line-end-position 3))
+    (goto-char (point-max))
+    (let ((start (search-backward "#endif" (point-min) t)))
+      (if start
+          (delete-region start (point-max))
+        (message "No #endif")))))
+
+(defun marc/re-search (dir re bound)
+  "Search for regular expression if not found return bound.
+Parameter dir can be either 'forward or 'backward."
+  (save-excursion
+    (cond ((eq dir 'backward)
+           (let ((pos (re-search-backward re bound t)))
+             (if pos pos bound)))
+          ((eq dir 'forward)
+           (let ((pos (re-search-forward re bound t)))
+             (if pos pos bound)))
+          (t (error "invalid direction")))))
+
 (provide 'myconfig)
