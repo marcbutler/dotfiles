@@ -23,8 +23,17 @@ if [ $(type -t ls) == "alias" ]; then
     unalias ls
 fi
 
-# Linux pbcopy/pbpaste
+# Emulate Mac pb(copy|paste) on Linux
 if [[ "$(uname -o)" == "GNU/Linux" ]]; then
     alias pbcopy='xclip -selection clipboard -i'
     alias pbpaste='xclip -selection clipboard -o'
 fi
+
+# Start a program in the background preventing output
+# in the current terminal.
+function disavow {
+    COPROC=(/dev/null /dev/null)
+    if coproc $* ; then
+        disown -h $!
+    fi
+}
