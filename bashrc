@@ -1,18 +1,13 @@
 # -*- Mode: shell-script -*-
 
-add_to_path() {
-    # Ignore if it doesn't exist.
-    [[ -d $1 ]] || return
-
-    # Don't add if already in path.
-    for d in ${PATH//:/ }; do
-	if [[ "$d" = "$1" ]]; then
-	    return
-	fi
-    done
-
-    export PATH=$PATH:$1
-}
+# Assumes dotfiles/bash_profile has been evaluated.
 
 add_to_path $HOME/.local/bin
 add_to_path /lib/cargo/bin
+add_to_path /opt/hiroco/bin
+
+# Protect myself from myself.
+alias mv='mv -i'
+alias cp='cp -i'
+alias rm='rm -I'
+
