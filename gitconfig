@@ -6,3 +6,5 @@
 	email = 135883+marcbutler@users.noreply.github.com
 [alias]
 	st = status --short
+[init]
+	defaultBranch = main

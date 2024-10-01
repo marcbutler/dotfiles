@@ -1,10 +1,6 @@
 (setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
 (load custom-file)
 
-;; ubuntu 22 does not appear to have the emacs standard themese as
-;; part of the emacs installation
-(load-theme 'whiteboard)
-
 ;; I use emacs primarily for files outside of version control: so
 ;; enable numbered backup files.
 (setq make-backup-files t
@@ -24,7 +20,16 @@
 (require 'use-package)
 (use-package clingo-mode)
 
+(when window-system
+  (exec-path-from-shell-initialize))
+
+(defun my-stupid-func ()
+  "Hello world!"
+  (interactive)  
+  (message "hello world"))
+
 ;; Key customizations.
+(global-set-key [f6] 'comment-or-uncomment-region)
 (global-set-key [f8] 'save-buffer)
-(global-set-key [f6] 'comment-region)
-(global-set-key [(control f6)] 'uncomment-region)
+
+(load-theme 'mockingbird t)
