@@ -1,8 +1,7 @@
 (setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
 (load custom-file)
 
-;; I use emacs primarily for files outside of version control: so
-;; enable numbered backup files.
+;; Enable numbered backup files as I use emacs primarily for files outside of version control.
 (setq make-backup-files t
       backup-by-copying t		; Don't clobber symlinks.
       version-control t
@@ -23,12 +22,7 @@
 (when window-system
   (exec-path-from-shell-initialize))
 
-(defun my-stupid-func ()
-  "Hello world!"
-  (interactive)  
-  (message "hello world"))
-
-;; Key customizations.
+;; User available keys.
 (global-set-key [f6] 'comment-or-uncomment-region)
 (global-set-key [f8] 'save-buffer)
 
