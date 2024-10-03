@@ -1,5 +1,8 @@
 # -*- Mode: shell-script -*-
 
+export PROMPT_DIRTRIM=2
+export PS1='\h:\w$(__git_ps1 " (%s)") [$?]\$ '
+
 add_to_path() {
     # Ignore if it doesn't exist.
     [[ -d $1 ]] || return
@@ -16,7 +19,7 @@ add_to_path() {
 
 add_to_path $HOME/.local/bin
 add_to_path /lib/cargo/bin
-add_to_path /opt/hiroco/bin
+#add_to_path /opt/hiroco/bin
 
 # Protect myself from myself.
 alias mv='mv -i'

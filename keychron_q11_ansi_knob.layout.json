@@ -303,7 +303,7 @@
       "KC_F12",
       "KC_INS",
       "KC_DEL",
-      "KC_MUTE",
+      "KC_MPLY",
       "KC_7",
       "KC_8",
       "KC_9",
@@ -471,7 +471,7 @@
     [
       ["KC_MPRV", "KC_MNXT"],
       ["RGB_VAD", "RGB_VAI"],
-      ["KC_VOLD", "KC_VOLU"],
+      ["KC_MPRV", "KC_MNXT"],
       ["RGB_VAD", "RGB_VAI"]
     ]
   ]
