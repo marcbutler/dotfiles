@@ -6,5 +6,7 @@
 	email = 135883+marcbutler@users.noreply.github.com
 [alias]
 	st = status --short
+	ffwd = merge --ff-only
+	br = branch
 [init]
 	defaultBranch = main
