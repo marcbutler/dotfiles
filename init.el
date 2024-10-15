@@ -17,10 +17,18 @@
 (package-initialize)
 
 (require 'use-package)
-(use-package clingo-mode)
 
 (when window-system
   (exec-path-from-shell-initialize))
+
+;; On Ubuntu install libtext-multimarkdown-perl for multimarkdown command.
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown")
+  :bind (:map markdown-mode-map
+              ("C-c C-e" . markdown-do)))
+
 
 ;; User available keys.
 (global-set-key [f6] 'comment-or-uncomment-region)

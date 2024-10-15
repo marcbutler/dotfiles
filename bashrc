@@ -9,7 +9,7 @@ export VISUAL=$EDITOR
 alias h=history
 shopt -s histappend
 export HISTCONTROL='ignoredups:erasedups'
-export HISTIGNORE='history:ls:l:la:ll:h:n:d:pd:pd1:pd2:pd3:xd:xd1:xd1:xd2:xd3'
+export HISTIGNORE='history:ls:l:la:ll:pd:pd1:pd2:pd3:xd:xd1:xd1:xd2:xd3'
 
 alias l='\ls -htr'
 alias ls='\ls -tr'
@@ -21,7 +21,8 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias rm='rm -I'
 
-alias d='dirs -v'
+# directory stack
+alias ds='dirs -v'
 alias pd=pushd
 alias pd1='pushd +1'
 alias pd2='pushd +2'
@@ -31,12 +32,22 @@ alias xd1='popd +1'
 alias xd2='popd +2'
 alias xd3='popd +3'
 
-
 # docker aliases
 alias dcnt='docker container'
 alias dcmp='docker compose'
 alias dimg='docker image'
 
+# list directories
+lsd() {
+    local top="${1:-${PWD}}"
+    find "$top" -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'
+}
+
+# list all directories recursively
+tree() {
+    local top="${1:-${PWD}}"
+    find "$top" -mindepth 1 -type d -not -path '*/.*'
+}
 
 add_to_path() {
     # Ignore if it doesn't exist.
@@ -55,5 +66,3 @@ add_to_path() {
 add_to_path /lib/cargo/bin
 add_to_path $HOME/.local/bin
 add_to_path $HOME/.cargo/bin
-#add_to_path /opt/hiroco/bin
-
