@@ -31,6 +31,13 @@ alias xd1='popd +1'
 alias xd2='popd +2'
 alias xd3='popd +3'
 
+
+# docker aliases
+alias dcnt='docker container'
+alias dcmp='docker compose'
+alias dimg='docker image'
+
+
 add_to_path() {
     # Ignore if it doesn't exist.
     [[ -d $1 ]] || return

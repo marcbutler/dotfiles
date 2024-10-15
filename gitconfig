@@ -6,7 +6,12 @@
 	email = 135883+marcbutler@users.noreply.github.com
 [alias]
 	st = status --short
-	ffwd = merge --ff-only
 	br = branch
+	upd = add -u
+	diffc = diff --cached
+	ffwd = merge --ff-only
 [init]
 	defaultBranch = main
+[diff]
+	colormoved = "default"
+	colormovedws = "allow-indentation-change"
