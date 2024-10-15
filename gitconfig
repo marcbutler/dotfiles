@@ -10,6 +10,7 @@
 	upd = add -u
 	diffc = diff --cached
 	ffwd = merge --ff-only
+	co = checkout
 [init]
 	defaultBranch = main
 [diff]
