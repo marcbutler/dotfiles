@@ -134,7 +134,7 @@
  '(parenthesis ((t (:foreground "gray70"))))
  '(sp-show-pair-match-face ((t (:foreground "black" :weight bold))))
  '(sp-show-pair-mismatch-face ((t (:background "red" :foreground "black" :weight bold))))
- '(show-paren-match ((t (:foreground "black" :weight bold))))
+ '(show-paren-match ((t (:background "light green"))))
  '(show-paren-mismatch ((t (:background "red" :foreground "black" :weight bold))))
  '(js2-function-param ((t (:foreground "#111111"))))
  '(js2-external-variable ((t (:foreground "#111111"))))
