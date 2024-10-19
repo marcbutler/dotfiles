@@ -68,14 +68,12 @@
 
 ;; On Ubuntu install libtext-multimarkdown-perl for multimarkdown command.
 (use-package markdown-mode
-  :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "multimarkdown")
   :bind (:map markdown-mode-map
 	      ("C-c C-e" . markdown-do)))
 
 (use-package yaml-mode
-  :ensure t
   :mode ("\\.yml\\'" . yaml-mode)
   :mode	("\\.yaml\\'" . yaml-mode))
 
@@ -84,7 +82,6 @@
 (use-package dockerfile-mode)
 
 (use-package session
-  :ensure t
   :hook (after-save . session-save-session)
   :config
   (session-initialize))
@@ -100,11 +97,9 @@
   ("C-c g l" . git-link))
 
 (use-package python-docstring
-  :ensure t
   :hook (python-mode . python-docstring-mode))
 
 (use-package editorconfig
-  :ensure t
   :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
