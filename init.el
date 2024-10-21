@@ -25,7 +25,6 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-
 (require 'use-package)
 
 (when window-system
@@ -48,17 +47,17 @@
 	   (scroll-bar-mode -1)
 	   (load-theme 'mockingbird t)))
 
-;;
 ;; spell checking
-;;
 (setq ispell-program-name "aspell")
 (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
 (use-package flycheck
+  :ensure t
   :hook
   (after-init . global-flycheck-mode))
 
 
-(use-package json-mode)
+(use-package json-mode
+  :ensure t)
 
 ;; On Ubuntu install libtext-multimarkdown-perl for multimarkdown command.
 (use-package markdown-mode
@@ -73,9 +72,11 @@
   :mode ("\\.yml\\'" . yaml-mode)
   :mode	("\\.yaml\\'" . yaml-mode))
 
-(use-package toml-mode)
+(use-package toml-mode
+  :ensure t)
 
-(use-package dockerfile-mode)
+(use-package dockerfile-mode
+  :ensure t)
 
 (use-package session
   :ensure t
@@ -84,12 +85,14 @@
   (session-initialize))
 
 (use-package projectile
+  :ensure t
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
   :config
   (projectile-global-mode))
 
 (use-package git-link
+  :ensure t
   :bind
   ("C-c g l" . git-link))
 
@@ -108,4 +111,3 @@
 ;; User available keys.
 (global-set-key [f6] 'comment-or-uncomment-region)
 (global-set-key [f8] 'save-buffer)
-
