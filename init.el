@@ -1,4 +1,9 @@
-(setq custom-file (expand-file-name (concat user-emacs-directory "custom.el")))
+;;; init.el --- Initialization
+;;; Code:
+;;; Commentary:
+
+(setq custom-file
+      (expand-file-name (concat user-emacs-directory "custom.el")))
 (load custom-file)
 
 (set-charset-priority 'unicode)
@@ -45,9 +50,12 @@
 (if (display-graphic-p)
     (progn (tool-bar-mode -1)
 	   (scroll-bar-mode -1)
-	   (load-theme 'mockingbird t)))
+	   (load-theme 'modus-operandi t)))
 
+;;
 ;; spell checking
+;;
+(use-package ispell)
 (setq ispell-program-name "aspell")
 (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
 (use-package flycheck
@@ -55,20 +63,17 @@
   :hook
   (after-init . global-flycheck-mode))
 
-
 (use-package json-mode
   :ensure t)
 
 ;; On Ubuntu install libtext-multimarkdown-perl for multimarkdown command.
 (use-package markdown-mode
-  :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "multimarkdown")
   :bind (:map markdown-mode-map
 	      ("C-c C-e" . markdown-do)))
 
 (use-package yaml-mode
-  :ensure t
   :mode ("\\.yml\\'" . yaml-mode)
   :mode	("\\.yaml\\'" . yaml-mode))
 
@@ -79,7 +84,6 @@
   :ensure t)
 
 (use-package session
-  :ensure t
   :hook (after-save . session-save-session)
   :config
   (session-initialize))
@@ -89,7 +93,7 @@
   :bind-keymap ("C-c p" . projectile-command-map)
   :init
   :config
-  (projectile-global-mode))
+  (projectile-mode +1))
 
 (use-package git-link
   :ensure t
@@ -97,12 +101,9 @@
   ("C-c g l" . git-link))
 
 (use-package python-docstring
-  :ensure t
   :hook (python-mode . python-docstring-mode))
 
-
 (use-package editorconfig
-  :ensure t
   :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
@@ -111,3 +112,6 @@
 ;; User available keys.
 (global-set-key [f6] 'comment-or-uncomment-region)
 (global-set-key [f8] 'save-buffer)
+
+(provide 'init)
+;;; init.el ends here
