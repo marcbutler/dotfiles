@@ -10,12 +10,16 @@
 (package-refresh-contents)
 
 (defvar setup/packages
-  '(dockerfile-mode
+  '(ansible
+    ansible-doc
+    dockerfile-mode
     editorconfig
+    flycheck
     git-link
     json-mode
     ispell
     markdown-mode
+    modus-themes
     poetry
     projectile
     python-docstring

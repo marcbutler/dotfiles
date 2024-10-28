@@ -11,6 +11,8 @@ shopt -s histappend
 export HISTCONTROL='ignoredups:erasedups'
 export HISTIGNORE='history:ls:l:la:ll:pd:pd1:pd2:pd3:xd:xd1:xd1:xd2:xd3'
 
+export IGNOREEOF=3
+
 alias e='emacsclient -n'
 
 alias l='\ls -htr'

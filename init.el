@@ -2,8 +2,16 @@
 ;;; Code:
 ;;; Commentary:
 
-(setq custom-file
-      (expand-file-name (concat user-emacs-directory "custom.el")))
+(defun marc/dotemacsdir-relative-path (path)
+  "Path to PATH in user Emacs customization directory."
+  (expand-file-name (concat user-emacs-directory path)))
+
+(defun marc/home-relative-path (path)
+  "Path to PATH in my dotfiles configuration."
+  (expand-file-name
+   (substitute-in-file-name (concat "$HOME/" path))))
+
+(setq custom-file (marc/dotemacsdir-relative-path "custom.el"))
 (load custom-file)
 
 (set-charset-priority 'unicode)
@@ -14,15 +22,18 @@
 (prefer-coding-system        'utf-8)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 
-(setq make-backup-files t
-      backup-by-copying t		; Don't clobber symlinks.
-      version-control nil
-      delete-old-versions t
-      delete-by-moving-to-trash t
-      auto-save-default t
-      auto-save-timeout 20		; Seconds.
-      auto-save-interval 200		; Keystrokes.
-      )
+(setq
+ auto-save-default t
+ auto-save-interval 200			; Keystrokes.
+ auto-save-timeout 20			; Seconds.
+ backup-by-copying t			; Don't clobber symlinks.
+ delete-by-moving-to-trash t
+ delete-old-versions t
+ make-backup-files t
+ sentence-end-double-space nil		; Sentences are demarcated by single and not double
+					; spaces.
+ version-control nil
+ )
 
 ;; allow typing y/n instead of yes/no
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -32,8 +43,23 @@
 (package-initialize)
 (require 'use-package)
 
+(use-package diminish)
+
+
+(add-to-list 'auto-mode-alist '("\\.gdb\\'" . gdb-script-mode))
+
+
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (setq truncate-lines t
+		  comment-auto-fill-only-comments t
+		  ;; Big dislays.
+		  fill-column 96)))
+
+
 (when window-system
   (exec-path-from-shell-initialize))
+
 
 ;; Builtin and not supported by use-package circa version 29.
 (require 'server)
@@ -46,7 +72,7 @@
 (show-paren-mode 1)
 (setq show-paren-context-when-offscreen t)
 
-;; Moar text.
+;; MOAR text.
 (if (display-graphic-p)
     (progn (tool-bar-mode -1)
 	   (scroll-bar-mode -1)
@@ -65,6 +91,10 @@
 
 (use-package json-mode
   :ensure t)
+
+
+(use-package typescript-mode)
+
 
 ;; On Ubuntu install libtext-multimarkdown-perl for multimarkdown command.
 (use-package markdown-mode
@@ -95,23 +125,60 @@
   :config
   (projectile-mode +1))
 
+
 (use-package git-link
   :ensure t
   :bind
   ("C-c g l" . git-link))
 
+(use-package poetry)
+
+(use-package python
+  ;; TODO
+  :hook (python-mode . (lambda ())))
+
 (use-package python-docstring
   :hook (python-mode . python-docstring-mode))
+
 
 (use-package editorconfig
   :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
 
+(defmacro if-bound-invoke (fun expr)
+  "If the FUN is bound, invoke EXPR."
+  `(if (fboundp ,fun) ,expr))
 
-;; User available keys.
-(global-set-key [f6] 'comment-or-uncomment-region)
-(global-set-key [f8] 'save-buffer)
+(use-package dired
+  :config
+  (require 'dired-x)
+  :hook
+  ;; Emacs-lisp mode doesn't understand use-package and thinks dired-x
+  ;; won't be loaded when the hook is installed.
+  ((dired-mode . (lambda () (if-bound-invoke `dired-omit-mode
+					      '(dired-omit-mode))))))
+
+
+;;
+;; Custom functions.
+;;
+
+(defun marc/copy-path-to-kill-ring ()
+  "Copy current buffer path to the \"kill-ring\"."
+  (interactive)
+  (when buffer-file-name
+    (kill-new (file-truename buffer-file-name))))
+
+;;
+;; Key customization.
+;;
+
+;; User available function keys <F5> thru <F9>, though in practice I've never seen the function
+;; keys bound by either emacs or a major mode.
+;;
+;; C-c <letter> NOTE: C-c C-<letter> is reserved for major mdoes.
+;;
 
 (provide 'init)
 ;;; init.el ends here
