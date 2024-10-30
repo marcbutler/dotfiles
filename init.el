@@ -89,12 +89,9 @@
   :hook
   (after-init . global-flycheck-mode))
 
-(use-package json-mode
-  :ensure t)
+(use-package adoc-mode)
 
-
-(use-package typescript-mode)
-
+(use-package json-mode)
 
 ;; On Ubuntu install libtext-multimarkdown-perl for multimarkdown command.
 (use-package markdown-mode
@@ -112,6 +109,7 @@
 
 (use-package dockerfile-mode
   :ensure t)
+
 
 (use-package session
   :hook (after-save . session-save-session)
@@ -140,6 +138,9 @@
 (use-package python-docstring
   :hook (python-mode . python-docstring-mode))
 
+(use-package typescript-mode)
+
+(use-package go-mode)
 
 (use-package editorconfig
   :diminish editorconfig-mode

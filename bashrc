@@ -71,3 +71,6 @@ add_to_path() {
 add_to_path /lib/cargo/bin
 add_to_path $HOME/.local/bin
 add_to_path $HOME/.cargo/bin
+
+# Make sure this is last.
+add_to_path /opt/hiroco/bin
