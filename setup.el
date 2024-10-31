@@ -10,12 +10,15 @@
 (package-refresh-contents)
 
 (defvar setup/packages
-  '(ansible
-    ansible-doc
+  '(ace-window
+    adoc-mode
+    ansible
+    diminish
     dockerfile-mode
     editorconfig
     flycheck
     git-link
+    go-mode
     json-mode
     ispell
     markdown-mode
@@ -25,6 +28,7 @@
     python-docstring
     session
     toml-mode
+    typescript-mode
     yaml-mode))
 
 (dolist (package setup/packages)

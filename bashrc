@@ -1,6 +1,6 @@
 # # -*- Mode: shell-script -*-
 
-export PROMPT_DIRTRIM=2
+export PROMPT_DIRTRIM=1
 export PS1='\h:\w$(__git_ps1 " (%s)") [$?]\$ '
 
 export EDITOR=vim
@@ -25,7 +25,7 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias rm='rm -I'
 
-# directory stack
+# Directory stack.
 alias ds='dirs -v'
 alias pd=pushd
 alias pd1='pushd +1'

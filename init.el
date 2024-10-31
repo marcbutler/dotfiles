@@ -73,17 +73,18 @@
 (setq show-paren-context-when-offscreen t)
 
 ;; MOAR text.
-(if (display-graphic-p)
-    (progn (tool-bar-mode -1)
-	   (scroll-bar-mode -1)
-	   (load-theme 'modus-operandi t)))
 
-;;
-;; spell checking
-;;
+(if (display-graphic-p)
+    (progn
+      (require 'modus-themes)
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)
+      (load-theme 'modus-operandi :no-confirm)))
+
 (use-package ispell)
 (setq ispell-program-name "aspell")
 (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
+
 (use-package flycheck
   :ensure t
   :hook
@@ -99,6 +100,9 @@
   :init (setq markdown-command "multimarkdown")
   :bind (:map markdown-mode-map
 	      ("C-c C-e" . markdown-do)))
+
+(use-package ansible
+  :hook (yaml-mode . (lambda () (ansible-mode 1))))
 
 (use-package yaml-mode
   :mode ("\\.yml\\'" . yaml-mode)
@@ -136,6 +140,7 @@
   :hook (python-mode . (lambda ())))
 
 (use-package python-docstring
+  :diminish
   :hook (python-mode . python-docstring-mode))
 
 (use-package typescript-mode)
@@ -171,15 +176,19 @@
   (when buffer-file-name
     (kill-new (file-truename buffer-file-name))))
 
-;;
-;; Key customization.
-;;
+(use-package ace-window
+  :diminish)
 
-;; User available function keys <F5> thru <F9>, though in practice I've never seen the function
-;; keys bound by either emacs or a major mode.
-;;
-;; C-c <letter> NOTE: C-c C-<letter> is reserved for major mdoes.
-;;
+(global-set-key (kbd "M-p") 'ace-window)
+
+(use-package ace-window
+  :diminish)
+
+(global-set-key (kbd "M-p") 'ace-window)
+
+;; User available keys.
+(global-set-key [f6] 'comment-or-uncomment-region)
+(global-set-key [f8] 'save-buffer)
 
 (provide 'init)
 ;;; init.el ends here

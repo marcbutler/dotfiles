@@ -5,12 +5,13 @@
 	name = Marc Butler
 	email = 135883+marcbutler@users.noreply.github.com
 [alias]
-	st = status --short
 	br = branch
-	upd = add -u
+	co = checkout
 	diffc = diff --cached
 	ffwd = merge --ff-only
-	co = checkout
+	st = status --short
+	sw = switch
+	upd = add -u
 [init]
 	defaultBranch = main
 [diff]
